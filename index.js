@@ -106,14 +106,21 @@ app.get('/alumnos/:dni', (req, res) => {
 
 app.post('/alumnos', (req, res) => {
     let obj = req.body;
-    alumnosArray.push(new Alumno(obj.username, obj.dni, obj.edad));
+    let alumno = new Alumno(obj.username, obj.dni, obj.edad);
+    alumnosArray.push(alumno);
     res.status(201).send();
 })
 
 app.delete('/alumnos', (req, res) => {
-    let dni = req.body;
-    if (alumnosArray.findIndex(dni) != -1){
-        delete alumnosArray[findIndex(dni)];
+    let body = req.body;
+    let index = -1;
+    alumnosArray.forEach((alumno, i) => {
+        if (alumno.dni == body.dni){
+            index = i;
+        }
+    });
+    if (index != -1){
+        alumnosArray.splice(index, 1);
         res.status(200).send();
     }
     else{
